@@ -2,7 +2,7 @@
 PhotonHome is an open source, hobbyist maker project to assist building
 Particle.io Photon based IoT devices for use with Home Assistant.
 
-![PhotonHome IoT Diagram](https://www.lucidchart.com/publicSegments/view/32ea1100-7c03-4f62-9b8e-6f3f05e39234/image.png)
+![PhotonHome IoT Diagram](https://www.lucidchart.com/publicSegments/view/cf84a4cb-33e4-48fa-958f-4de3a44b3612/image.png)
 
 It is intended to help other hobbyists quickly create Internet-of-Things
 projects that can be controlled using Home Assistant.

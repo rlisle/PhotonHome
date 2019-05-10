@@ -73,8 +73,10 @@ public:
      */
     void loop();
 
-//    void addDevice(Device *device);
-//    void addBehavior(Behavior *behavior);
+    /**
+     * Call addDevice for each supported device on a controller
+     */
+    void addDevice(Device *device);
 
     /**
      * Helper methods
@@ -99,8 +101,8 @@ private:
     /**
      * Include other needed objects
      */
-//    Devices     *_devices;
-//    DeviceNames *_deviceNames;
+    Devices     *_devices;
+    DeviceNames *_deviceNames;
     MQTTManager *_mqttManager;
     MQTTParser  *_mqttParser;
 

@@ -3,7 +3,7 @@ MQTTParser
 
 This class handles all MQTT parsing.
 
-http://www.github.com/rlisle/Patriot
+http://www.github.com/rlisle/PhotonHome
 
 Written by Ron Lisle
 
@@ -11,16 +11,15 @@ BSD license, check LICENSE for more information.
 All text above must be included in any redistribution.
 
 Changelog:
-2018-11-07: Created by refactoring from IoT
+2019-05-09: Created by refactoring from Patriot
 ******************************************************************/
 #include "MQTTParser.h"
 
-MQTTParser::MQTTParser(String controllerName, String publishName, Devices *devices, Behaviors *behaviors)
+MQTTParser::MQTTParser(String controllerName, String publishName, Devices *devices)
 {
     _controllerName = controllerName;
     _publishName = publishName;
     _devices = devices;
-    _behaviors = behaviors;
 }
 
 void MQTTParser::parseMessage(String topic, String message, MQTT *mqtt)
@@ -30,23 +29,24 @@ void MQTTParser::parseMessage(String topic, String message, MQTT *mqtt)
     Serial.println("MQTTParser received: " + topic + ", " + message);
 
     if(topic.startsWith(_publishName)) {
-        if(topic.length() == publishNameLength) {   // legacy
-            int colonPosition = message.indexOf(':');
-            String name = message.substring(0,colonPosition);
-            String state = message.substring(colonPosition+1);
-            // See if this is a device name. If so, update it.
-            Device* device = _devices->getDeviceWithName(name);
-            if(device)
-            {
-                int percent = state.toInt();
-                device->setPercent(percent);
-                return;
-            }
-            // If it wasn't a device name, it must be an activity.
-            int value = state.toInt();
-            _behaviors->performActivity(name, value);
+        // if(topic.length() == publishNameLength) {   // legacy
+        //     int colonPosition = message.indexOf(':');
+        //     String name = message.substring(0,colonPosition);
+        //     String state = message.substring(colonPosition+1);
+        //     // See if this is a device name. If so, update it.
+        //     Device* device = _devices->getDeviceWithName(name);
+        //     if(device)
+        //     {
+        //         int percent = state.toInt();
+        //         device->setPercent(percent);
+        //         return;
+        //     }
+        //     // If it wasn't a device name, it must be an activity.
+        //     int value = state.toInt();
+        //     _behaviors->performActivity(name, value);
 
-        } else {
+        // } else {
+            // Looking for a topic like: <publishName>/
             int firstSlash = topic.indexOf('/');
             int lastSlash = topic.lastIndexOf('/');
             if(firstSlash == -1 || lastSlash == -1 || firstSlash == lastSlash) {

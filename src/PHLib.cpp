@@ -67,7 +67,6 @@ void PhotonHome::log(String msg)
 PhotonHome::PhotonHome()
 {
     // be sure not to call anything that requires hardware be initialized here, put those in begin()
-    _factory                = new Factory();
     _hasBegun               = false;
     _controllerName         = kDefaultControllerName;
     _mqttManager            = NULL;
@@ -97,8 +96,8 @@ void PhotonHome::begin()
 
     Serial.begin(57600);
 
-// _devices = new Devices();
-// _deviceNames = new DeviceNames();
+    _devices = new Devices();
+    _deviceNames = new DeviceNames();
 }
 
 // MQTT 

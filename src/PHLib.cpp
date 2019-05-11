@@ -7,6 +7,8 @@ a common API for adding and configuring entities.
 It leverages Home Assistant's MQTT Discovery to automatically
 connect entities with Home Assistant over MQTT.
 
+Devices will transmit their info to Home Assistant as they are added.
+
 http://www.github.com/rlisle/PhotonHome
 
 Written by Ron Lisle
@@ -106,6 +108,9 @@ void PhotonHome::connectMQTT(String brokerIP, String connectID)
     Serial.println("Connecting to MQTT on IP " + brokerIP);
     _mqttParser = new MQTTParser(_controllerName, _devices);
     _mqttManager = new MQTTManager(brokerIP, connectID, _controllerName, _mqttParser);
+
+    // Note: if devices were already added, then publish them
+    // TODO:
 }
 
 void PhotonHome::mqttPublish(String topic, String message)
@@ -137,6 +142,7 @@ void PhotonHome::addDevice(Device *device)
     if(device->name() != "") {
         Serial.println("PhotonHome adding device: "+device->name()+".");
         _deviceNames->addDevice(device->name());
+        //TODO: publish new device if MQTT is already connected
     }
     else
     {

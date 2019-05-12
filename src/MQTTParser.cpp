@@ -3,6 +3,15 @@ MQTTParser
 
 This class handles all MQTT parsing.
 
+Topic strings are organized to simplify parsing:
+    [mqttPrefix/]controllerName/deviceID/...
+
+If the mqttPrefix and controllerName matches this controller, 
+then each device is compared against the deviceID. 
+When a match is found, the remainder of the topic is passed to 
+the device's message() method for handling.
+If message() returns a non-NULL string, it is returned.???
+
 http://www.github.com/rlisle/PhotonHome
 
 Written by Ron Lisle

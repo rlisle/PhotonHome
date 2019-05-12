@@ -49,11 +49,13 @@ class Device {
     virtual String name() { return _name; };
     virtual DeviceType type() { return _type; };
 
-    virtual void   command(String attribute, String message) { }
-    virtual String state(String attribute) { return "0"; }
+    // Helper method to format deviceID from name
     virtual String deviceID() {
         return _name.replace(" ", "-").toLowerCase();
     }
+
+    // Handle all commands and queries through the message() method
+    virtual String message(String subTopic, String message) { return NULL; }
 
     // Perform things continuously, such as fading or slewing
     virtual void loop() {};

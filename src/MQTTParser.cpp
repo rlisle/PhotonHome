@@ -22,6 +22,8 @@ MQTTParser::MQTTParser(String controllerName, String publishName, Devices *devic
     _devices = devices;
 }
 
+// Topics are expected to be <optional mqttPrefix>/<optional controller>/<device>/
+// <device> will be all lowercase with no spaces (converted to '-')
 void MQTTParser::parseMessage(String topic, String message, MQTT *mqtt)
 {
     uint publishNameLength = _publishName.length();

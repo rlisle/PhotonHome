@@ -19,8 +19,6 @@ Changelog:
 #include "Particle.h"
 #include "device.h"
 
-#define MAX_NUM_DEVICES 64
-
 class Devices
 {
 public:

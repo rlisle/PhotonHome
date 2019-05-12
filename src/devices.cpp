@@ -13,13 +13,14 @@ Changelog:
 2019-05-10: Initial file from Patriot
 ******************************************************************/
 #include "devices.h"
+#include "constants.h"
 
 Devices::Devices()
 {
     // Without this method, strange error is reported and build fails
     _numDevices = 0;
     //TODO: dynamically allocate array space
-    _devices = new Device *[MAX_NUM_DEVICES];
+    _devices = new Device *[kMaxNumberOfDevices];
 }
 
 // Returns non-zero if # devices exceeded

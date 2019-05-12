@@ -1,5 +1,5 @@
 /******************************************************************
-MQTTManager.h
+MQTTManager.cpp
 
 This class handles all MQTT interactions.
 

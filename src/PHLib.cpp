@@ -68,13 +68,19 @@ void PhotonHome::log(String msg)
  */
 PhotonHome::PhotonHome()
 {
-    // be sure not to call anything that requires hardware be initialized here, put those in begin()
-    _hasBegun               = false;
     _controllerName         = kDefaultControllerName;
+    _discoveryPrefix        = kDefaultDiscoveryPrefix;
+    _mqttPrefix             = NULL;
     _mqttManager            = NULL;
     _mqttParser             = NULL;
+    _haManager              = NULL;
     _startTime              = Time.now();
     _currentTime            = _startTime;
+
+    Serial.begin(57600);
+
+    _devices = new Devices();
+    _deviceNames = new DeviceNames();
 }
 
 /**
@@ -88,18 +94,23 @@ void PhotonHome::setControllerName(String name)
 }
 
 /**
- * Begin gets everything going.
- * It must be called exactly once by the sketch
+ * Specify the discovery prefix
+ *  
+ * @param discoveryPrefix
  */
-void PhotonHome::begin()
+void PhotonHome::setDiscoveryPrefix(String prefix)
 {
-    if(_hasBegun) return;
-    _hasBegun = true;
+    _discoveryPrefix = prefix;
+}
 
-    Serial.begin(57600);
-
-    _devices = new Devices();
-    _deviceNames = new DeviceNames();
+/**
+ * Specify the mqtt prefix
+ *  
+ * @param mqttPrefix
+ */
+void PhotonHome::setMQTTPrefix(String prefix)
+{
+    _mqttPrefix = prefix;
 }
 
 // MQTT 
@@ -108,6 +119,9 @@ void PhotonHome::connectMQTT(String brokerIP, String connectID)
     Serial.println("Connecting to MQTT on IP " + brokerIP);
     _mqttParser = new MQTTParser(_controllerName, _devices);
     _mqttManager = new MQTTManager(brokerIP, connectID, _controllerName, _mqttParser);
+
+    //TODO: what happens if user tries to set these values later?
+    _haManager = new HAManager(_mqttManager, _mqttPrefix, _discoveryPrefix, _controllerName);
 
     // Note: if devices were already added, then publish them
     // TODO:
@@ -142,14 +156,16 @@ void PhotonHome::addDevice(Device *device)
     if(device->name() != "") {
         Serial.println("PhotonHome adding device: "+device->name()+".");
         _deviceNames->addDevice(device->name());
-        //TODO: publish new device if MQTT is already connected
+
+        if(_haManager != NULL) {
+            _haManager->sendDiscovery(device);
+        }
     }
     else
     {
         Serial.println("PhotonHome adding unnamed device. (Probably an input only device)");
     }
 }
-
 
 /******************************/
 /*** MQTT Subscribe Handler ***/

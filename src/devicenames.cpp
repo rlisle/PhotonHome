@@ -4,7 +4,7 @@ Device Names
 This class represents all the devices on a controller.
 These can be Lights, Fans, etc.
 
-http://www.github.com/rlisle/Patriot
+http://www.github.com/rlisle/PhotonHome
 
 Written by Ron Lisle
 
@@ -12,9 +12,7 @@ BSD license, check license.txt for more information.
 All text above must be included in any redistribution.
 
 Changelog:
-2017-03-24: Rename Patriot
-2017-03-05: Convert to v2 particle lib
-2016-12-20: Initial version
+2019-05-11: Refactor from Patriot
 ******************************************************************/
 #include "devicenames.h"
 #include "constants.h"

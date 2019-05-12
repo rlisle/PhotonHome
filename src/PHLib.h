@@ -23,6 +23,7 @@ Changelog:
 #include "constants.h"
 #include "MQTTManager.h"
 #include "MQTTParser.h"
+#include "HAManager.h"
 
 /**
  * Main PhotonHome object.
@@ -46,15 +47,9 @@ public:
      * These are used to provide names and change defaults.
      * Only these methods may be called before begin()
      */
-    void setPublishName(String publishName);
-    void setControllerName(String controllerName);
-
-    /**
-     * begin
-     * Call begin to initialize the object.
-     * This is done here instead of the constructor to improve debugging.
-     */
-    void begin();
+    void setDiscoveryPrefix(String discoveryPrefix); // default "homeassistant"
+    void setMQTTPrefix(String mqttPrefix);           // optional, default none
+    void setControllerName(String controllerName);   // default "MyPhoton"
 
     /**
      * connectMQTT(byte * brokerIP, String connectID)
@@ -86,8 +81,9 @@ public:
 
 private:
     static PhotonHome* _instance;
-    bool    _hasBegun;
     String  _controllerName;
+    String  _discoveryPrefix;
+    String  _mqttPrefix;
     system_tick_t _startTime;
     system_tick_t _currentTime;
 
@@ -105,6 +101,7 @@ private:
     DeviceNames *_deviceNames;
     MQTTManager *_mqttManager;
     MQTTParser  *_mqttParser;
+    HAManager   *_haManager;
 
     void periodicReset();
 

@@ -22,8 +22,8 @@ Changelog:
 #pragma once
 
 #include "application.h"  // Defines String
+#include "constants.h"
 
-#define MAX_NUM_DEVICENAMES 16
 
 class DeviceNames
 {
@@ -36,7 +36,7 @@ public:
 
 private:
   uint8_t   _numDevices;
-  String    _devices[MAX_NUM_DEVICENAMES];
+  String    _devices[kMaxNumberOfDevices];
 
   void      expose();
   void      buildDevicesVariable();

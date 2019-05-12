@@ -4,7 +4,14 @@ Device abstract class
 This virtual class provides a common header for all devices
 such as Lights, Switches, Fans, etc.
 
-http://www.github.com/rlisle/Patriot
+Devices are controlled using topics and messages strings.
+This is optimized for MQTT, although other methods could be used.
+
+The device name may include spaces and capitalization, but the deviceID
+will have spaces converted to dashes and be forced to lower case.
+For example, "Sink Light" will be converted to deviceID "sink-light"
+
+http://www.github.com/rlisle/PhotonHome
 
 Written by Ron Lisle
 
@@ -33,7 +40,6 @@ class Device {
  protected:
     String     _name;
     DeviceType _type;
-    int        _percent;
 
  public:
     // Note: refer to http://www.learncpp.com/cpp-tutorial/114-constructors-and-initialization-of-derived-classes/
@@ -43,21 +49,13 @@ class Device {
     virtual String name() { return _name; };
     virtual DeviceType type() { return _type; };
 
-    // This method can either read the device directly, or use a value
-    // set in the loop() if continuous or asynchronous polling is used.
-    virtual int getPercent() { return _percent; }
-
-    // You will need to override this if you are creating an output device
-    // This is the method that should control it.
-    virtual void setPercent(int percent) { _percent = percent; };
-
-    // These are just convenience methods
-    virtual bool isOn() { return _percent > 0; };
-    virtual bool isOff() { return _percent == 0; };
-
-    virtual void setOn() { setPercent(100); };
-    virtual void setOff() { setPercent(0); };
+    virtual void   command(String attribute, String message) { }
+    virtual String state(String attribute) { return "0"; }
+    virtual String deviceID() {
+        return _name.replace(" ", "-").toLowerCase();
+    }
 
     // Perform things continuously, such as fading or slewing
     virtual void loop() {};
+
 };

@@ -21,7 +21,9 @@ Changelog:
  */
 static const long kDefaultAliveInterval     = 60000;
 
-static const int    kMaxVariableStringLength         = 266;
+static const int    kMaxVariableStringLength         = 256;
 static const String kDevicesVariableName             = "Devices";
-static const String kDefaultControllerName           = "myPhoton";
-static const String kDefaultMQTTTopicPrefix          = "homeassistant";
+static const String kDefaultControllerName           = "MyPhoton";
+static const String kDefaultDiscoveryPrefix          = "homeassistant";
+static const int    kMaxNumberOfDevices              = 64;
+

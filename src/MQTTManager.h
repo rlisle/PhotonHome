@@ -6,7 +6,7 @@ This class handles all MQTT interactions.
 Note: to avoid making this a singleton, 
 the caller must provide global callback handlers (see externs).
 
-http://www.github.com/rlisle/Patriot
+http://www.github.com/rlisle/PhotonHome
 
 Written by Ron Lisle
 

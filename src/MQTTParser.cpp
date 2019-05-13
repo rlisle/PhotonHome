@@ -24,10 +24,13 @@ Changelog:
 ******************************************************************/
 #include "MQTTParser.h"
 
-MQTTParser::MQTTParser(String controllerName, String publishName, Devices *devices)
+MQTTParser::MQTTParser(String mqttPrefix, String controllerName, Devices *devices)
 {
-    _controllerName = controllerName;
-    _publishName = publishName;
+    if(mqttPrefix != NULL) {
+        _prefixString = mqttPrefix + "/" + controllerName;
+    } else {
+        _prefixString = controllerName;
+    }
     _devices = devices;
 }
 
@@ -35,11 +38,11 @@ MQTTParser::MQTTParser(String controllerName, String publishName, Devices *devic
 // <device> will be all lowercase with no spaces (converted to '-')
 void MQTTParser::parseMessage(String topic, String message, MQTT *mqtt)
 {
-    uint publishNameLength = _publishName.length();
-
     Serial.println("MQTTParser received: " + topic + ", " + message);
 
-    if(topic.startsWith(_publishName)) {
+    // Is this addressed to this controller?
+    if(topic.startsWith(_prefixString)) {
+
         // if(topic.length() == publishNameLength) {   // legacy
         //     int colonPosition = message.indexOf(':');
         //     String name = message.substring(0,colonPosition);

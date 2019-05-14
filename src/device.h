@@ -23,6 +23,20 @@ Changelog:
 ******************************************************************/
 #pragma once
 
+enum class HomeAssistantType {
+    Alarm_Control_Panel,
+    Binary_Sensor,
+    Camera,
+    Climate,    // HVAC
+    Cover,      // Fan cover, blinds
+    Fan,
+    Light,
+    Lock,
+    Sensor,
+    Switch,
+    Vacuum
+};
+
 enum class DeviceType {
     Unknown,
     Fan,

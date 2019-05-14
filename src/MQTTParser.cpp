@@ -4,13 +4,12 @@ MQTTParser
 This class handles all MQTT parsing.
 
 Topic strings are organized to simplify parsing:
-    [mqttPrefix/]controllerName/deviceID/...
+    <controllerName>/<deviceID>/<attribute>/set|status
 
-If the mqttPrefix and controllerName matches this controller, 
+If the controllerName matches this controller, 
 then each device is compared against the deviceID. 
-When a match is found, the remainder of the topic is passed to 
-the device's message() method for handling.
-If message() returns a non-NULL string, it is returned.???
+When a match is found, the setAttribute method is called
+or the status method's value returned.
 
 http://www.github.com/rlisle/PhotonHome
 
@@ -24,22 +23,18 @@ Changelog:
 ******************************************************************/
 #include "MQTTParser.h"
 
-MQTTParser::MQTTParser(String controllerName, String publishName, Devices *devices)
+MQTTParser::MQTTParser(String controllerName, Devices *devices)
 {
     _controllerName = controllerName;
-    _publishName = publishName;
     _devices = devices;
 }
 
-// Topics are expected to be <optional mqttPrefix>/<optional controller>/<device>/
-// <device> will be all lowercase with no spaces (converted to '-')
+// Topics are expected to be all lowercase and no spaces (converted to '-')
 void MQTTParser::parseMessage(String topic, String message, MQTT *mqtt)
 {
-    uint publishNameLength = _publishName.length();
-
     Serial.println("MQTTParser received: " + topic + ", " + message);
 
-    if(topic.startsWith(_publishName)) {
+    if(topic.startsWith(_controllerName)) {
         // if(topic.length() == publishNameLength) {   // legacy
         //     int colonPosition = message.indexOf(':');
         //     String name = message.substring(0,colonPosition);
@@ -57,7 +52,6 @@ void MQTTParser::parseMessage(String topic, String message, MQTT *mqtt)
         //     _behaviors->performActivity(name, value);
 
         // } else {
-            // Looking for a topic like: <publishName>/
             int firstSlash = topic.indexOf('/');
             int lastSlash = topic.lastIndexOf('/');
             if(firstSlash == -1 || lastSlash == -1 || firstSlash == lastSlash) {

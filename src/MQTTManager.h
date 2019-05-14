@@ -26,7 +26,7 @@ class MQTTManager
 {
 public:
 
-  MQTTManager(String publishName, String brokerIP, String connectID, String controllerName, MQTTParser *parser);
+  MQTTManager(String brokerIP, String connectID, String controllerName, MQTTParser *parser);
 
   void        publish(String topic, String message);
   void        loop();
@@ -36,7 +36,6 @@ public:
 private:
     MQTT      *_mqtt;
     MQTTParser *_parser;
-    String    _publishName;
     String    _connectID;
     String    _brokerIP;
     String    _controllerName;

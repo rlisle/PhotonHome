@@ -7,6 +7,9 @@ a common API for adding and configuring entities.
 It leverages Home Assistant's MQTT Discovery to automatically
 connect entities with Home Assistant over MQTT.
 
+Defaults are used to simplify the initial implementation.
+If needed, things like discovery prefix could become programmable.
+
 http://www.github.com/rlisle/PhotonHome
 
 Written by Ron Lisle
@@ -47,8 +50,6 @@ public:
      * These are used to provide names and change defaults.
      * Only these methods may be called before begin()
      */
-    void setDiscoveryPrefix(String discoveryPrefix); // default "homeassistant"
-    void setMQTTPrefix(String mqttPrefix);           // optional, default none
     void setControllerName(String controllerName);   // default "MyPhoton"
 
     /**
@@ -82,8 +83,6 @@ public:
 private:
     static PhotonHome* _instance;
     String  _controllerName;
-    String  _discoveryPrefix;
-    String  _mqttPrefix;
     system_tick_t _startTime;
     system_tick_t _currentTime;
 

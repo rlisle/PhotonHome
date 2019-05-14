@@ -21,12 +21,11 @@ class MQTTParser
 {
 public:
 
-  MQTTParser(String controllerName, String publishName, Devices *devices);
+  MQTTParser(String controllerName, Devices *devices);
 
   void parseMessage(String topic, String message, MQTT *mqtt);
 
 private:
   String    _controllerName;
-  String    _publishName;
   Devices   *_devices;
 };

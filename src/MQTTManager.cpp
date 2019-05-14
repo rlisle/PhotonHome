@@ -20,9 +20,8 @@ Changelog:
 
 extern void globalMQTTHandler(char *topic, byte* payload, unsigned int length);
 
-MQTTManager::MQTTManager(String publishName, String brokerIP, String connectID, String controllerName, MQTTParser *parser)
+MQTTManager::MQTTManager(String brokerIP, String connectID, String controllerName, MQTTParser *parser)
 {
-    _publishName = publishName;
     _brokerIP = brokerIP;       // delete?
     _connectID = connectID;     // delete?
     _controllerName = controllerName;
@@ -48,10 +47,10 @@ void MQTTManager::connect() {
     _mqtt->connect(_connectID);  
     if (_mqtt->isConnected()) {
         // log("MQTT is connected.");
-        if(_mqtt->subscribe(_publishName+"/#") == false) {
-            // log("MQTT subscribed to " + _publishName + "/#");
-        // } else {
-            log("Unable to subscribe to MQTT " + _publishName + "/#");
+        if(_mqtt->subscribe("#") == false) {
+            log("MQTT subscribed to #");
+        } else {
+            log("Unable to subscribe to MQTT #");
         }
     } else {
         log("MQTT is NOT connected! Check MQTT IP address");

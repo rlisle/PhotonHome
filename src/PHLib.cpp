@@ -69,8 +69,6 @@ void PhotonHome::log(String msg)
 PhotonHome::PhotonHome()
 {
     _controllerName         = kDefaultControllerName;
-    _discoveryPrefix        = kDefaultDiscoveryPrefix;
-    _mqttPrefix             = NULL;
     _mqttManager            = NULL;
     _mqttParser             = NULL;
     _haManager              = NULL;
@@ -93,35 +91,13 @@ void PhotonHome::setControllerName(String name)
     _controllerName = name;
 }
 
-/**
- * Specify the discovery prefix
- *  
- * @param discoveryPrefix
- */
-void PhotonHome::setDiscoveryPrefix(String prefix)
-{
-    _discoveryPrefix = prefix;
-}
-
-/**
- * Specify the mqtt prefix
- *  
- * @param mqttPrefix
- */
-void PhotonHome::setMQTTPrefix(String prefix)
-{
-    _mqttPrefix = prefix;
-}
-
 // MQTT 
 void PhotonHome::connectMQTT(String brokerIP, String connectID)
 {
     Serial.println("Connecting to MQTT on IP " + brokerIP);
     _mqttParser = new MQTTParser(_controllerName, _devices);
     _mqttManager = new MQTTManager(brokerIP, connectID, _controllerName, _mqttParser);
-
-    //TODO: what happens if user tries to set these values later?
-    _haManager = new HAManager(_mqttManager, _mqttPrefix, _discoveryPrefix, _controllerName);
+    _haManager = new HAManager(_mqttManager, _controllerName);
 
     // Note: if devices were already added, then publish them
     // TODO:

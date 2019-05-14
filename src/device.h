@@ -54,8 +54,9 @@ class Device {
         return _name.replace(" ", "-").toLowerCase();
     }
 
-    // Handle all commands and queries through the message() method
-    virtual String message(String subTopic, String message) { return NULL; }
+    // Handle MQTT "set" and "status" messages
+    virtual void setAttribute(String attribute, String message) { return NULL; }
+    virtual String queryAttribute(String attribute) { return "unknown"; }
 
     // Perform things continuously, such as fading or slewing
     virtual void loop() {};

@@ -15,7 +15,6 @@ Changelog:
 ******************************************************************/
 #pragma once
 #include "devices.h"
-#include "MQTT.h"
 
 class MQTTParser
 {
@@ -23,7 +22,7 @@ public:
 
   MQTTParser(String controllerName, Devices *devices);
 
-  void parseMessage(String topic, String message, MQTT *mqtt);
+  void parseMessage(String topic, String message);
 
 private:
   String    _controllerName;

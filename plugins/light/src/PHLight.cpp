@@ -5,7 +5,12 @@
  - On/Off control
  - Smooth dimming with duration
 
- http://www.github.com/rlisle/Patriot
+ Supported Attributes:
+ - Switch
+ - Brightness
+ - Transition
+
+ http://www.github.com/rlisle/PhotonHome
 
  Written by Ron Lisle
 
@@ -15,16 +20,12 @@
  Datasheets:
 
  Changelog:
- 2019-01-03: v3.0.0 Assume use of Backup SRAM to persist percent across resets.
- 2017-10-28: Convert to v2.
- 2017-05-19: Extract to separate plugin library
- 2017-05-15: Make devices generic
- 2017-03-24: Rename Patriot
- 2016-07-07: Remove dimming mode
- 2016-01-17: Initial version
+ 2019-05-15: Initial version refactored from Patriot
  ******************************************************************/
 
-#include "PatriotLight.h"
+#include "PHLight.h"
+
+// PUBLIC FUNCTIONS
 
 /**
  * Constructor
@@ -39,40 +40,113 @@ Light::Light(int pinNum, String name, bool isInverted, bool forceDigital)
           _isInverted(isInverted),
           _forceDigital(forceDigital)
 {
-    _dimmingPercent           = 100;                                // On full
-    _dimmingDuration          = isPwmSupported() ? 2.0 : 0;
-//    _currentPercent           = 0.0;
-//    _targetPercent            = 0;
+    _dimmingPercent           = 100;                            // Default: 100%
+    _dimmingDuration          = isPwmSupported() ? 2.0 : 0;     // Default: 2 seconds
+    _currentPercent           = 0.0;        // May want to leave this retained
+    _targetPercent            = 0;          // May want to leave this retained
     _incrementPerMillisecond  = 0.0;
     _lastUpdateTime           = 0;
-//    _commandPercent            = 0;
     pinMode(pinNum, OUTPUT);
     outputPWM();                        // Set initial state
 }
 
 /**
- * Set percent
- * @param percent Int 0 to 100
+ * setState
+ * 
+ * @param attribute (lowercase "switch" or "brightness")
  */
-void Light::setPercent(int percent) {
-    _commandPercent = percent;
+void Light::setState(String attribute, String value) {
+    int percent = value.toInt();
+    if(attribute == "switch") {
+        setSwitch(value);
+    } else if(attribute == "brightness") {
+        setBrightness(value);        
+    } else if(attribute == "transition") {
+        setTransition(value);
+    }
+}
+
+/**
+ * getStatus - return the current value for an attribute
+ * 
+ * @param attribute (lowercase "switch" or "brightness")
+ */
+String Light::getStatus(String attribute) {
+    if(attribute == "switch") {
+        return getSwitch();
+    } else if(attribute == "brightness") {
+        return getBrightness();
+    } else if(attribute == "transition") {
+        return getTransition();
+    }
+    return "";
+}
+
+// PRIVATE FUNCTIONS
+
+int Light::stringToPercent(String value) {
+    int percent = value.toInt();
+    if(percent < 0) percent = 0;
+    if(percent > 100) percent = 100;
+    return percent;
+}
+
+String Light::percentToString(int value) {
+    return String(value);
+}
+
+/**
+ * Set switch
+ * @param value String "0" to "100"
+ */
+void Light::setSwitch(String value) {
+    if(value == "on") {
+        changePercent(_dimmingPercent);
+    } else if(value == "off") {
+        changePercent(0);
+    }
+}
+
+/**
+ * Get switch
+ * @return String current 0-100 percent value
+ */
+int Light::getSwitch() {
+    return _targetPercent == 0 ? "off" : "on";
+}
+
+/**
+ * Set brightness
+ * @param value String "0" to "100"
+ */
+void Light::setBrightness(String value) {
+    int percent = stringToPercent(value)
+    _dimmingPercent = percent;
     changePercent(percent);
 }
 
 /**
- * Get percent
- * @return Int current 0-100 percent value
+ * Get brightness
+ * @return String current 0-100 percent value
  */
-int Light::getPercent() {
-    return _currentPercent;
+int Light::getBrightness() {
+    return percentToString(_currentPercent);
 }
 
 /**
- * Set On
+ * Set transition
+ * @param String milliseconds "0" to "30000"
  */
-void Light::setOn() {
-    if(isAlreadyOn()) return;
-    changePercent(_dimmingPercent);
+void Light::setTransition(String value) {
+    _dimmingDuration = value.toFloat();
+}
+
+/**
+ * Get transition
+ * @return String milliseconds
+ */
+int Light::getTransition() {
+    return String(_dimmingDuration);
 }
 
 /**
@@ -93,22 +167,6 @@ void Light::changePercent(int percent) {
 }
 
 /**
- * Is already on?
- * @return bool true if light is on
- */
-bool Light::isAlreadyOn() {
-    return _targetPercent == _dimmingPercent;
-}
-
-/**
- * Is already off?
- * @return bool true if light is off
- */
-bool Light::isAlreadyOff() {
-    return _targetPercent == 0;
-}
-
-/**
  * Start smooth dimming
  */
 void Light::startSmoothDimming() {
@@ -118,69 +176,6 @@ void Light::startSmoothDimming() {
         _incrementPerMillisecond = delta / (_dimmingDuration * 1000);
     }
 }
-
-/**
- * Set light off
- */
-void Light::setOff() {
-    if(isAlreadyOff()) return;
-    setPercent(0);
-}
-
-/**
- * Is light on?
- * @return bool true if light is on
- */
-bool Light::isOn() {
-    return !isOff();
-}
-
-/**
- * Is light off?
- * @return bool true if light is off
- */
-bool Light::isOff() {
-    return _targetPercent == 0;
-}
-
-/**
- * Set dimming percent
- * @param percent Int new percent value
- */
-void Light::setDimmingPercent(int percent) {
-    if(_dimmingPercent != percent){
-        _dimmingPercent = percent;
-        changePercent(percent);
-    }
-}
-
-/**
- * Get dimming percent
- * @return Int current dimming percent value
- */
-int Light::getDimmingPercent() {
-    return _dimmingPercent;
-}
-
-/**
- * Set dimming duration
- * @param duration float number of seconds
- */
-void Light::setDimmingDuration(float duration) {
-    _dimmingDuration = duration;
-}
-
-/**
- * Get dimming duration
- * @return float number of dimming duration seconds
- */
-float Light::getDimmingDuration() {
-    return _dimmingDuration;
-}
-
-/**
- * Private Methods
- */
 
 /**
  * loop()

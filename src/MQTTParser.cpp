@@ -45,7 +45,7 @@ void MQTTParser::parseMessage(String topic, String message, MQTT *mqtt)
         || secondSlash == -1
         || thirdSlash == -1 
         || firstSlash == secondSlash 
-        || secondSlash == lastSlash) {
+        || secondSlash == thirdSlash) {
         Serial.println("MQTT message does not contain 3 slashes, so ignoring");
         return;
     }
@@ -65,7 +65,7 @@ void MQTTParser::parseMessage(String topic, String message, MQTT *mqtt)
     } else if(setOrStatus.equalsIgnoreCase("status")) {
         String result = device->queryAttribute(attribute);
         //TODO: what to do with the result?
-        
+
     } else {
         Serial.println("MQTT messages is not 'set' or 'status'");
     }

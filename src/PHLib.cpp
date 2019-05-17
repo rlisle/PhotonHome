@@ -19,7 +19,7 @@ All text above must be included in any redistribution.
 Changelog:
 2019-05-08: Initial create based on Patriot library.
 ******************************************************************/
-#include "PhotonHome.h"
+#include "PHLib.h"
 
 /**
  * Global MQTT subscribe handler

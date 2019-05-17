@@ -35,7 +35,7 @@
  * @param forceDigital True if output On/Off only (even if pin supports PWM)
  */
 Light::Light(int pinNum, String name, bool isInverted, bool forceDigital)
-        : Device(name, DeviceType::Light),
+        : Device(name, "Light"),
           _pin(pinNum),
           _isInverted(isInverted),
           _forceDigital(forceDigital)
@@ -51,12 +51,12 @@ Light::Light(int pinNum, String name, bool isInverted, bool forceDigital)
 }
 
 /**
- * setState
+ * setAttribute
  * 
- * @param attribute (lowercase "switch" or "brightness")
+ * @param attribute (lowercase "switch", "brightness", or "transition")
+ * @param value String numerical value
  */
-void Light::setState(String attribute, String value) {
-    int percent = value.toInt();
+void Light::setAttribute(String attribute, String value) {
     if(attribute == "switch") {
         setSwitch(value);
     } else if(attribute == "brightness") {
@@ -67,11 +67,11 @@ void Light::setState(String attribute, String value) {
 }
 
 /**
- * getStatus - return the current value for an attribute
+ * queryAttribute - return the current value for an attribute
  * 
  * @param attribute (lowercase "switch" or "brightness")
  */
-String Light::getStatus(String attribute) {
+String Light::queryAttribute(String attribute) {
     if(attribute == "switch") {
         return getSwitch();
     } else if(attribute == "brightness") {
@@ -111,7 +111,7 @@ void Light::setSwitch(String value) {
  * Get switch
  * @return String current 0-100 percent value
  */
-int Light::getSwitch() {
+String Light::getSwitch() {
     return _targetPercent == 0 ? "off" : "on";
 }
 
@@ -120,7 +120,7 @@ int Light::getSwitch() {
  * @param value String "0" to "100"
  */
 void Light::setBrightness(String value) {
-    int percent = stringToPercent(value)
+    int percent = stringToPercent(value);
     _dimmingPercent = percent;
     changePercent(percent);
 }
@@ -129,7 +129,7 @@ void Light::setBrightness(String value) {
  * Get brightness
  * @return String current 0-100 percent value
  */
-int Light::getBrightness() {
+String Light::getBrightness() {
     return percentToString(_currentPercent);
 }
 
@@ -145,7 +145,7 @@ void Light::setTransition(String value) {
  * Get transition
  * @return String milliseconds
  */
-int Light::getTransition() {
+String Light::getTransition() {
     return String(_dimmingDuration);
 }
 

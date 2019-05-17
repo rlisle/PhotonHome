@@ -23,7 +23,8 @@ Changelog:
 ******************************************************************/
 #pragma once
 
-enum class HomeAssistantType {
+// Here for reference. Now really used (yet)
+enum class HomeAssistantDeviceClass {
     Alarm_Control_Panel,
     Binary_Sensor,
     Camera,
@@ -37,31 +38,18 @@ enum class HomeAssistantType {
     Vacuum
 };
 
-enum class DeviceType {
-    Unknown,
-    Fan,
-    Light,
-    Motor,
-    NCD8Relay,
-    Presence,
-    Relay,
-    Switch,
-    TempHumidity,
-    Ultrasonic
-};
-
 class Device {
  protected:
-    String     _name;
-    DeviceType _type;
+    String  _name;
+    String  _deviceClass; // Home Assistant device class
 
  public:
     // Note: refer to http://www.learncpp.com/cpp-tutorial/114-constructors-and-initialization-of-derived-classes/
     //       for an explanation of how derived constructor member initialization works.
-    Device(String name = "", DeviceType type = DeviceType::Unknown) : _name(name), _type(type) { }
+    Device(String name, String deviceClass) : _name(name), _deviceClass(deviceClass) { }
 
     virtual String name() { return _name; };
-    virtual DeviceType type() { return _type; };
+    virtual String deviceClass() { return _deviceClass; };
 
     // Helper method to format deviceID from name
     virtual String deviceID() {
@@ -69,7 +57,7 @@ class Device {
     }
 
     // Handle MQTT "set" and "status" messages
-    virtual void setAttribute(String attribute, String message) { return NULL; }
+    virtual void setAttribute(String attribute, String message) { }
     virtual String queryAttribute(String attribute) { return "unknown"; }
 
     // Perform things continuously, such as fading or slewing

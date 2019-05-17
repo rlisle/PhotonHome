@@ -26,7 +26,7 @@ Devices::Devices()
 // Returns non-zero if # devices exceeded
 int Devices::addDevice(Device *device)
 {
-    if (_numDevices < MAX_NUM_DEVICES - 1)
+    if (_numDevices < kMaxNumberOfDevices - 1)
     {
         _devices[_numDevices++] = device;
     } else

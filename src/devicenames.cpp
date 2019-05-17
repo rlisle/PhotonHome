@@ -38,7 +38,7 @@ void DeviceNames::expose()
 // Returns non-zero if # devices exceeded
 int DeviceNames::addDevice(String device)
 {
-  if (_numDevices < MAX_NUM_DEVICENAMES-1)
+  if (_numDevices < kMaxNumberOfDevices-1)
   {
     _devices[_numDevices++] = device;
     buildDevicesVariable();

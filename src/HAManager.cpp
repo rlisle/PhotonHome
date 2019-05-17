@@ -14,12 +14,11 @@ Changelog:
 2019-05-11: Initial file creation
 ******************************************************************/
 #include "HAManager.h"
+#include "constants.h"
 
-HAManager::HAManager(MQTTManager *mqttManager, String mqttPrefix, String discoveryPrefix, String controllerName)
+HAManager::HAManager(MQTTManager *mqttManager, String controllerName)
 {
     _mqttManager     = mqttManager;
-    _mqttPrefix      = mqttPrefix;
-    _discoveryPrefix = discoveryPrefix;
     _controllerName  = controllerName;
 }
 
@@ -33,23 +32,19 @@ HAManager::HAManager(MQTTManager *mqttManager, String mqttPrefix, String discove
  * @param Device 
  **/
 void HAManager::sendDiscovery(Device *device) {
-    String topic = _discoveryPrefix 
-                + "/" + device->type 
+    String topic = kDefaultDiscoveryPrefix 
+                + "/" + device->deviceClass()
                 + "/" + _controllerName
                 + "/" + device->deviceID()
                 + "/" + "config";
 
-    String commonPath;
-    if(_mqttPrefix != NULL) {
-        commonPath = _mqttPrefix + "/";
-    }
-    commonPath += _controllerName + "/";
+    String commonPath = _controllerName + "/";
     commonPath += device->deviceID() + "/";
     String cmdPath = commonPath + "/set";
     String briCmdPath = commonPath + "/brightness/set";
     String message = "{\"name\":\"" + device->deviceID() 
                     + "\", \"cmd_t\":\"" + cmdPath
                     + "\", \"bri_cmd_t\":\"" + briCmdPath
-                    + "\"}"
+                    + "\"}";
     _mqttManager->publish(topic,message);
 }

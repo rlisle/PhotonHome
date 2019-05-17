@@ -27,6 +27,7 @@ Changelog:
 #include "MQTTManager.h"
 #include "MQTTParser.h"
 #include "HAManager.h"
+#include "devicenames.h"
 
 /**
  * Main PhotonHome object.

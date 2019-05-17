@@ -19,7 +19,7 @@ Changelog:
 ******************************************************************/
 
 #include <PHLib.h>
-#include <PHLibLight.h>
+#include <PHLight.h>
 
 PHLib *phlib;
 

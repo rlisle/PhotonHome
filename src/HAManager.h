@@ -24,11 +24,11 @@ class HAManager
 {
 public:
 
-  HAManager(MQTTManager *mqttManager, String discoveryPrefix);
+  HAManager(MQTTManager *mqttManager, String controllerName);
 
-  void      discovery(Device *device);
+  void      sendDiscovery(Device *device);
 
 private:
   MQTTManager *_mqttManager;
-  String      _discoveryPrefix;
+  String      _controllerName;
 };

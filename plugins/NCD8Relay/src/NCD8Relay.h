@@ -42,6 +42,9 @@ class NCD8Relay : public Device
     static int8_t _currentStates[];   // up to 8 relays currently supported
     static int8_t _addresses[];       // Addresses of up to 8 boards
 
+    void    setSwitch(String value);
+    String  getSwitch();
+
     int8_t  initialize8RelayBoard(int8_t address);
     int8_t  initializeBoard(int8_t address);
     int8_t  boardIndex(int8_t address);

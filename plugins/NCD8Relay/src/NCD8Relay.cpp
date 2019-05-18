@@ -41,7 +41,7 @@ int8_t NCD8Relay::_addresses[8];        // Addresses of up to 8 boards
  * @param name String name used to address the relay.
  * @param duration Optional seconds value to automatically turn off relay. 0 = no automatic turn off.
  */
-NCD8Relay::NCD8Relay(String name, String deviceClass, int8_t address, int8_t numRelays, int8_t relayNum, int8_t duration = 0)
+NCD8Relay::NCD8Relay(String name, String deviceClass, int8_t address, int8_t numRelays, int8_t relayNum, int8_t duration)
     : Device(name, deviceClass)
 {
     _relayNum   = relayNum;
@@ -165,7 +165,7 @@ void NCD8Relay::setSwitch(String value) {
  * @return String current 0-100 percent value
  */
 String NCD8Relay::getSwitch() {
-    return _targetPercent == 0 ? "off" : "on";
+    return _isOn ? "on" : "off";
 }
 
 

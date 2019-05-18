@@ -40,8 +40,9 @@ void HAManager::sendDiscovery(Device *device) {
 
     String commonPath = _controllerName + "/";
     commonPath += device->deviceID() + "/";
-    String cmdPath = commonPath + "/set";
-    String briCmdPath = commonPath + "/brightness/set";
+    String cmdPath = commonPath + "switch/set";
+    String briCmdPath = commonPath + "brightness/set";
+    String transCmdPath = commonPath + "transition/set";
     String message = "{\"name\":\"" + device->deviceID() 
                     + "\", \"cmd_t\":\"" + cmdPath
                     + "\", \"bri_cmd_t\":\"" + briCmdPath

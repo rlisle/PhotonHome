@@ -88,7 +88,7 @@ PhotonHome::PhotonHome()
  */
 void PhotonHome::setControllerName(String name)
 {
-    _controllerName = name;
+    _controllerName = name.toLowerCase();
 }
 
 // MQTT 

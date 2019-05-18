@@ -32,9 +32,12 @@ MQTTParser::MQTTParser(String controllerName, Devices *devices)
 // Topics are expected to be all lowercase and no spaces (converted to '-')
 void MQTTParser::parseMessage(String topic, String message, MQTT *mqtt)
 {
+    topic.toLowerCase();
+    message.toLowerCase();
     Serial.println("MQTTParser received: " + topic + ", " + message);
 
     if(topic.startsWith(_controllerName) == false) {
+        Serial.printlnf("Not this controller: %s",_controllerName.c_str());
         return;
     }
 
@@ -58,6 +61,8 @@ void MQTTParser::parseMessage(String topic, String message, MQTT *mqtt)
         Serial.println("MQTT message does not contain a known device");
         return;
     }
+    Serial.printlnf("MQTT device: %s, attribute: %s, set/status: %s, msg: %s",
+        deviceID.c_str(), attribute.c_str(), setOrStatus.c_str(), message.c_str());
 
     if(setOrStatus.equalsIgnoreCase("set")) {
         device->setAttribute(attribute,message);

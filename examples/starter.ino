@@ -21,12 +21,12 @@ Changelog:
 #include <PHLib.h>
 #include <PHLight.h>
 
-PHLib *phlib;
+PhotonHome *phlib;
 
 void setup() {
     phlib = PHLib::getInstance();
     phlib->setControllerName("MyPhoton");       // Whatever you want to call it
-    phlib->connectMQTT("rons-mac-mini", "my-mqtt-id1"); // Something unique
+    phlib->connectMQTT("xx.xx.xx.xx", "my-mqtt-id1"); // Set broker IP, and something unique
 
     // Create devices
     //Note: D7 is not a PWM pin, so it can only turn on or off
@@ -43,5 +43,5 @@ void setup() {
 }
 
 void loop() {
-    iot->loop();
+    phlib->loop();
 }

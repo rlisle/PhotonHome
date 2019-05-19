@@ -31,7 +31,7 @@ HAManager::HAManager(MQTTManager *mqttManager, String controllerName)
  **/
 void HAManager::sendDiscovery(Device *device) {
     String message = device->getConfig(_controllerName);
-    if(message != NULL) {
+    if(!message.equalsIgnoreCase("none")) {
         String topic = kDefaultDiscoveryPrefix 
                     + "/" + device->deviceClass()
                     + "/" + _controllerName

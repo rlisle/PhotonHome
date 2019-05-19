@@ -34,7 +34,7 @@ class NCD8Relay : public Device
     int8_t  _boardIndex;            // Index into static arrays
     int8_t  _registerAddress;       // Is this different for different boards?
     int8_t  _duration;              // # seconds to keep on. 0 = forever
-    long    _stopMillis;            // time in millis to auto-stop
+    unsigned long _stopMillis;      // time in millis to auto-stop
 
     bool     _isOn;                 // Remember state
 

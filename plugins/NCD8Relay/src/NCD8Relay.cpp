@@ -220,7 +220,7 @@ void NCD8Relay::setOff() {
         Wire.beginTransmission(_addresses[_boardIndex]);
         Wire.write(_registerAddress);
         Wire.write(NCD8Relay::_currentStates[_boardIndex]);
-        byte status = Wire.endTransmission();
+        status = Wire.endTransmission();
     } while(status != 0 && retries++ < 3);
 
     if(status != 0) {
@@ -235,10 +235,11 @@ void NCD8Relay::setOff() {
  * @param controllerName String 
  * @return String Home Assistant configuration JSON
  */
-String getConfiguration(String controllerName) {
+String NCD8Relay::getConfiguration(String controllerName) {
     String config = "{\"name\":\"" + deviceID() + "\","
                 + "\"cmd_t\":\"" + controllerName + "/" + deviceID() + "/switch/set\""
                 + "}";
+    return config;
 }
 
 /**

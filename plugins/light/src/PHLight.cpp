@@ -93,6 +93,7 @@ String getConfiguration(String controllerName) {
                 + "\"cmd_t\":\"" + controllerName + "/" + deviceID() + "/switch/set\""
                 + ",\"bri_cmd_t\":\"" + controllerName + "/" + deviceID() + "/brightness/set\""
                 + "}";
+    return config;
 }
 
 // PRIVATE FUNCTIONS

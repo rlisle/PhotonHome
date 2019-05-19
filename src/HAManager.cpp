@@ -30,7 +30,7 @@ HAManager::HAManager(MQTTManager *mqttManager, String controllerName)
  * Refer to Home Assistant doc for MQTT discovery format
  **/
 void HAManager::sendDiscovery(Device *device) {
-    String message = device->getConfig(_controllerName);
+    String message = device->getConfiguration(_controllerName);
     if(!message.equalsIgnoreCase("none")) {
         String topic = kDefaultDiscoveryPrefix 
                     + "/" + device->deviceClass()

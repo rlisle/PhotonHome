@@ -54,8 +54,10 @@ class NCD8Relay : public Device
     //TODO: move duration to an HA attribute
     NCD8Relay(String name, String deviceClass, int8_t address, int8_t numRelays, int8_t relayNum, int8_t duration = 0);
 
-    void      setAttribute(String attribute, String value);
-    String    queryAttribute(String attribute);
+    String  getConfiguration(String controllerName);
+
+    void    setAttribute(String attribute, String value);
+    String  queryAttribute(String attribute);
 
     void    setOn();
     void    setOff();

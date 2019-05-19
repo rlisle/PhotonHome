@@ -229,9 +229,17 @@ void NCD8Relay::setOff() {
     }
 }
 
-/**
- * Private Methods
+/*
+ * Get Configuration
+ * Return Home Assistant configuration for MQTT autodiscovery
+ * @param controllerName String 
+ * @return String Home Assistant configuration JSON
  */
+String getConfiguration(String controllerName) {
+    String config = "{\"name\":\"" + deviceID() + "\","
+                + "\"cmd_t\":\"" + controllerName + "/" + deviceID() + "/switch/set\""
+                + "}";
+}
 
 /**
  * loop()

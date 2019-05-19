@@ -25,27 +25,18 @@ HAManager::HAManager(MQTTManager *mqttManager, String controllerName)
 /**
  * Send discovery to Home Assistant via MQTT
  * 
- * <discovery_prefix>/<component=deviceType>/<node_id=controllerName>/<object_id>/config
- * payload = {"name":"<deviceID", "cmd_t":"mqttPath", "bri_cmd_t":"<mqttPath>"}
-
- * 
  * @param Device 
+ * 
+ * Refer to Home Assistant doc for MQTT discovery format
  **/
 void HAManager::sendDiscovery(Device *device) {
-    String topic = kDefaultDiscoveryPrefix 
-                + "/" + device->deviceClass()
-                + "/" + _controllerName
-                + "/" + device->deviceID()
-                + "/" + "config";
-
-    String commonPath = _controllerName + "/";
-    commonPath += device->deviceID() + "/";
-    String cmdPath = commonPath + "switch/set";
-    String briCmdPath = commonPath + "brightness/set";
-    String transCmdPath = commonPath + "transition/set";
-    String message = "{\"name\":\"" + device->deviceID() 
-                    + "\", \"cmd_t\":\"" + cmdPath
-                    + "\", \"bri_cmd_t\":\"" + briCmdPath
-                    + "\"}";
-    _mqttManager->publish(topic,message);
+    String message = device->getConfig(_controllerName);
+    if(message != NULL) {
+        String topic = kDefaultDiscoveryPrefix 
+                    + "/" + device->deviceClass()
+                    + "/" + _controllerName
+                    + "/" + device->deviceID()
+                    + "/" + "config";
+        _mqttManager->publish(topic,message);
+    }
 }

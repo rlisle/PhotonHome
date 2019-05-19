@@ -82,6 +82,19 @@ String Light::queryAttribute(String attribute) {
     return "";
 }
 
+/*
+ * Get Configuration
+ * Return Home Assistant configuration for MQTT autodiscovery
+ * @param controllerName String 
+ * @return String Home Assistant configuration JSON
+ */
+String getConfiguration(String controllerName) {
+    String config = "{\"name\":\"" + deviceID() + "\","
+                + "\"cmd_t\":\"" + controllerName + "/" + deviceID() + "/switch/set\""
+                + ",\"bri_cmd_t\":\"" + controllerName + "/" + deviceID() + "/brightness/set\""
+                + "}";
+}
+
 // PRIVATE FUNCTIONS
 
 int Light::stringToPercent(String value) {

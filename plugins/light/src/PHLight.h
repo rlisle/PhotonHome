@@ -58,6 +58,8 @@ class Light : public Device
  public:
     Light(int pin, String name, bool isInverted=false, bool forceDigital=false);
 
+    String    getConfiguration(String controllerName);
+    
     void      setAttribute(String attribute, String value);
     String    queryAttribute(String attribute);
 

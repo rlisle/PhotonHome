@@ -60,6 +60,8 @@ class Device {
     virtual void setAttribute(String attribute, String message) { }
     virtual String queryAttribute(String attribute) { return "unknown"; }
 
+    virtual String getConfiguration(String controllerName) { return NULL; }
+
     // Perform things continuously, such as fading or slewing
     virtual void loop() {};
 

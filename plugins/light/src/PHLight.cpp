@@ -35,7 +35,7 @@
  * @param forceDigital True if output On/Off only (even if pin supports PWM)
  */
 Light::Light(int pinNum, String name, bool isInverted, bool forceDigital)
-        : Device(name, "Light"),
+        : Device(name, "light"),
           _pin(pinNum),
           _isInverted(isInverted),
           _forceDigital(forceDigital)

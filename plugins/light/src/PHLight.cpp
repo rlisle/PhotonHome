@@ -88,7 +88,7 @@ String Light::queryAttribute(String attribute) {
  * @param controllerName String 
  * @return String Home Assistant configuration JSON
  */
-String getConfiguration(String controllerName) {
+String Light::getConfiguration(String controllerName) {
     String config = "{\"name\":\"" + deviceID() + "\","
                 + "\"cmd_t\":\"" + controllerName + "/" + deviceID() + "/switch/set\""
                 + ",\"bri_cmd_t\":\"" + controllerName + "/" + deviceID() + "/brightness/set\""

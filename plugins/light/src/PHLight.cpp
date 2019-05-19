@@ -92,6 +92,7 @@ String Light::getConfiguration(String controllerName) {
     String config = "{\"name\":\"" + deviceID() + "\","
                 + "\"cmd_t\":\"" + controllerName + "/" + deviceID() + "/switch/set\""
                 + ",\"bri_cmd_t\":\"" + controllerName + "/" + deviceID() + "/brightness/set\""
+                + ",\"retain\":true"
                 + "}";
     return config;
 }

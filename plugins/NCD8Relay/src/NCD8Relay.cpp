@@ -238,6 +238,7 @@ void NCD8Relay::setOff() {
 String NCD8Relay::getConfiguration(String controllerName) {
     String config = "{\"name\":\"" + deviceID() + "\","
                 + "\"cmd_t\":\"" + controllerName + "/" + deviceID() + "/switch/set\""
+                + ",\"retain\":true"
                 + "}";
     return config;
 }

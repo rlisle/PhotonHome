@@ -92,11 +92,22 @@ void PhotonHome::setControllerName(String name)
 }
 
 // MQTT 
-void PhotonHome::connectMQTT(String brokerIP, String connectID)
+void PhotonHome::connectMQTT(byte *brokerIP, String connectID)
 {
-    Serial.println("Connecting to MQTT on IP " + brokerIP);
+    Serial.println("Connecting to MQTT on IP");
     _mqttParser = new MQTTParser(_controllerName, _devices);
     _mqttManager = new MQTTManager(brokerIP, connectID, _controllerName, _mqttParser);
+    _haManager = new HAManager(_mqttManager, _controllerName);
+
+    // Note: if devices were already added, then publish them
+    // TODO:
+}
+
+void PhotonHome::connectMQTT(String brokerDomain, String connectID)
+{
+    Serial.println("Connecting to MQTT on domain " + brokerDomain);
+    _mqttParser = new MQTTParser(_controllerName, _devices);
+    _mqttManager = new MQTTManager(brokerDomain, connectID, _controllerName, _mqttParser);
     _haManager = new HAManager(_mqttManager, _controllerName);
 
     // Note: if devices were already added, then publish them

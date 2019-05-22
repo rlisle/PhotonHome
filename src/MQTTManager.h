@@ -20,15 +20,16 @@ Changelog:
 #include "Particle.h"
 #include "MQTTParser.h"
 #include "MQTT.h"
-
+#include "constants.h"
 
 class MQTTManager
 {
 public:
 
-  MQTTManager(String brokerIP, String connectID, String controllerName, MQTTParser *parser);
+  MQTTManager(String brokerDomain, String connectID, String controllerName, MQTTParser *parser);
+  MQTTManager(byte *brokerIP, String connectID, String controllerName, MQTTParser *parser);
 
-  void        publish(String topic, String message);
+  void        publish(String topic, String message, bool retain = kDefaultRetain);
   void        loop();
   void        mqttHandler(char* topic, byte* payload, unsigned int length);
   void        log(String message);

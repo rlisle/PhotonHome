@@ -20,14 +20,21 @@ Changelog:
 
 extern void globalMQTTHandler(char *topic, byte* payload, unsigned int length);
 
-MQTTManager::MQTTManager(String brokerIP, String connectID, String controllerName, MQTTParser *parser)
+MQTTManager::MQTTManager(String brokerDomain, String connectID, String controllerName, MQTTParser *parser)
 {
-    _brokerIP = brokerIP;       // delete?
-    _connectID = connectID;     // delete?
     _controllerName = controllerName;
     _parser = parser;
 
-    _mqtt =  new MQTT((char *)brokerIP.c_str(), 1883, globalMQTTHandler);
+    _mqtt =  new MQTT((char *)brokerDomain.c_str(), 1883, globalMQTTHandler);
+    connect();
+}
+
+MQTTManager::MQTTManager(byte *brokerIP, String connectID, String controllerName, MQTTParser *parser) 
+{
+    _controllerName = controllerName;
+    _parser = parser;
+
+    _mqtt =  new MQTT(brokerIP, 1883, globalMQTTHandler);
     connect();
 }
 
@@ -67,9 +74,9 @@ void MQTTManager::log(String message)
     }
 }
 
-void MQTTManager::publish(String topic, String message)
+void MQTTManager::publish(String topic, String message, bool retain)
 {
-    _mqtt->publish(topic, message);
+    _mqtt->publish(topic, message, retain);
 }
 
 void MQTTManager::loop()

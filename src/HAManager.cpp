@@ -37,6 +37,6 @@ void HAManager::sendDiscovery(Device *device) {
                     + "/" + _controllerName
                     + "/" + device->deviceID()
                     + "/" + "config";
-        _mqttManager->publish(topic,message);
+        _mqttManager->publish(topic,message,true);
     }
 }

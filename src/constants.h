@@ -26,4 +26,5 @@ static const String kDevicesVariableName             = "Devices";
 static const String kDefaultControllerName           = "MyPhoton";
 static const String kDefaultDiscoveryPrefix          = "homeassistant";
 static const int    kMaxNumberOfDevices              = 64;
+static const bool   kDefaultRetain                   = true;
 

@@ -57,7 +57,13 @@ public:
      * connectMQTT(byte * brokerIP, String connectID)
      * Connect to an MQTT broker with specified IP
      **/
-    void connectMQTT(String brokerIP, String connectID);
+    void connectMQTT(byte *brokerIP, String connectID);
+
+    /**
+     * connectMQTT(String brokerDomain, String connectID)
+     * Connect to an MQTT broker with specified domain name
+     **/
+    void connectMQTT(String brokerDomain, String connectID);
 
     /**
      * mqttPublish(String topic, String message)

@@ -98,9 +98,10 @@ void PhotonHome::connectMQTT(byte *brokerIP, String connectID)
     _mqttParser = new MQTTParser(_controllerName, _devices);
     _mqttManager = new MQTTManager(brokerIP, connectID, _controllerName, _mqttParser);
     _haManager = new HAManager(_mqttManager, _controllerName);
+    _mqttParser->configSendingDelegate = this;
 
     // Note: if devices were already added, then publish them
-    // TODO:
+    //sendConfig();
 }
 
 void PhotonHome::connectMQTT(String brokerDomain, String connectID)
@@ -110,8 +111,8 @@ void PhotonHome::connectMQTT(String brokerDomain, String connectID)
     _mqttManager = new MQTTManager(brokerDomain, connectID, _controllerName, _mqttParser);
     _haManager = new HAManager(_mqttManager, _controllerName);
 
-    // Note: if devices were already added, then publish them
-    // TODO:
+    // Note: if devices were added before MQTT connected, then to ahead and publish them
+    sendConfig();
 }
 
 void PhotonHome::mqttPublish(String topic, String message)
@@ -151,6 +152,22 @@ void PhotonHome::addDevice(Device *device)
     else
     {
         Serial.println("PhotonHome adding unnamed device. (Probably an input only device)");
+    }
+}
+
+// ConfigSending Protocol Implementation
+void PhotonHome::sendConfig() 
+{
+    Serial.println("Sending config");
+
+    if(_haManager == NULL || _devices == NULL) { 
+        Serial.println("Error: required object not set");
+        return; 
+    }
+
+    for(int i=0; i < _devices->numDevices(); i++) {
+        Device *device = _devices->getDeviceByNum(i);
+        _haManager->sendDiscovery(device);
     }
 }
 

@@ -11,6 +11,11 @@ then each device is compared against the deviceID.
 When a match is found, the setAttribute method is called
 or the status method's value returned.
 
+
+In addition, it will respond to global PhotonHome messages:
+    photonhome     config       Resend config data
+
+
 http://www.github.com/rlisle/PhotonHome
 
 Written by Ron Lisle
@@ -19,6 +24,7 @@ BSD license, check LICENSE for more information.
 All text above must be included in any redistribution.
 
 Changelog:
+2019-05-24: Add config query
 2019-05-09: Created by refactoring from Patriot
 ******************************************************************/
 #include "MQTTParser.h"
@@ -27,6 +33,7 @@ MQTTParser::MQTTParser(String controllerName, Devices *devices)
 {
     _controllerName = controllerName;
     _devices = devices;
+    configSendingDelegate = NULL;
 }
 
 // Topics are expected to be all lowercase and no spaces (converted to '-')
@@ -35,6 +42,14 @@ void MQTTParser::parseMessage(String topic, String message, MQTT *mqtt)
     topic.toLowerCase();
     message.toLowerCase();
     Serial.println("MQTTParser received: " + topic + ", " + message);
+
+    if(topic.startsWith("photonhome")) {
+        Serial.println("Config query received, Home Assistant must be restarting");
+        if(configSendingDelegate != NULL) {
+            configSendingDelegate->sendConfig();
+        }
+        return;
+    }
 
     if(topic.startsWith(_controllerName) == false) {
         Serial.printlnf("Not this controller: %s",_controllerName.c_str());

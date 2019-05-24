@@ -16,10 +16,13 @@ Changelog:
 #pragma once
 #include "devices.h"
 #include "MQTT.h"
+#include "ConfigSending.h"
 
 class MQTTParser
 {
 public:
+
+  ConfigSending *configSendingDelegate;
 
   MQTTParser(String controllerName, Devices *devices);
 

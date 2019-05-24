@@ -33,7 +33,7 @@ Changelog:
  * Main PhotonHome object.
  * It provides an API for creating and communicating with all others.
  */
-class PhotonHome {
+class PhotonHome : public ConfigSending {
 
     friend void globalMQTTHandler(char *topic, byte* payload, unsigned int length);
 
@@ -80,6 +80,12 @@ public:
      * Call addDevice for each supported device on a controller
      */
     void addDevice(Device *device);
+
+    /**
+     * ConfigSending Protocol
+     * Send Home Assistant automatic configuration data
+     */
+    void sendConfig();
 
     /**
      * Helper methods
